@@ -1,0 +1,6 @@
+{
+  "name": "LudoSkill",
+  "description": "Real-money Ludo platform with direct matches, multiplayer lobby, practice bots, wallet flow, and secure gameplay engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

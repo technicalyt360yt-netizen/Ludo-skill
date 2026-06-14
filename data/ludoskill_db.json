@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "id": "admin-id-shahbaz",
+      "email": "shahbazad543@gmail.com",
+      "username": "AdminShahbaz",
+      "password": "Learn##123",
+      "walletBalance": 100000.0,
+      "status": "active",
+      "isAdmin": true,
+      "createdAt": "2026-06-14T04:40:00Z"
+    },
+    {
+      "id": "system-bot-id",
+      "email": "bot@ludoskill.com",
+      "username": "LudoBot",
+      "password": "system-bot-password-non-login",
+      "walletBalance": 1000000.0,
+      "status": "active",
+      "isAdmin": false,
+      "createdAt": "2026-06-14T04:40:00Z"
+    }
+  ],
+  "deposits": [],
+  "withdrawals": [],
+  "matches": []
+}
