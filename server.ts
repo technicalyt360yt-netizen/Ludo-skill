@@ -99,23 +99,20 @@ const lobbyBroadcastNotifications: Array<{ id: string; message: string; timestam
 const userLastOnline: { [userId: string]: number } = {};
 
 const app = express();
+const PORT = 3000;
 
-async function startServer() {
-  
-  // Custom CORS middleware for seamless iframe sandboxing and preview domain communication
-  app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    if (req.method === "OPTIONS") {
-      return res.sendStatus(200);
-    }
-    next();
-  });
+// Custom CORS middleware for seamless iframe sandboxing and preview domain communication
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-  app.use(express.json({ limit: "20mb" })); // allow screenshot uploads
-
-  const PORT = 3000;
+app.use(express.json({ limit: "20mb" })); // allow screenshot uploads
 
   // Real-time Match Sync background loop: check timers every 1 second
   setInterval(() => {
@@ -1306,22 +1303,23 @@ async function startServer() {
   });
 
 
-  // Mounting Vite Middlewares in development mode
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa"
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
-
+// Mounting Vite Middlewares / Listening
+async function startServer() {
   if (!process.env.VERCEL) {
+    if (process.env.NODE_ENV !== "production") {
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa"
+      });
+      app.use(vite.middlewares);
+    } else {
+      const distPath = path.join(process.cwd(), "dist");
+      app.use(express.static(distPath));
+      app.get("*", (req, res) => {
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    }
+
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`LudoSkill container server running on port ${PORT}`);
     });
