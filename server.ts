@@ -2,7 +2,6 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
-import { createServer as createViteServer } from "vite";
 import { 
   TRACK, 
   START_INDEX_GREEN, 
@@ -12,7 +11,7 @@ import {
   getTokenCoordinate, 
   getTrackIndex, 
   getUniformDiceRollServer 
-} from "./src/lib/ludo_rules.js"; // note: we import with js since it targets build, but in tsx server.ts it resolves correctly. Wait! It is standard to import from ./src/lib/ludo_rules or with .js in ESM. Let's use direct "./src/lib/ludo_rules" which resolves natively in tsx.
+} from "./src/lib/ludo_rules";
 
 const DB_FILE = process.env.VERCEL
   ? path.join("/tmp", "ludoskill_db.json")
@@ -1307,6 +1306,7 @@ app.use(express.json({ limit: "20mb" })); // allow screenshot uploads
 async function startServer() {
   if (!process.env.VERCEL) {
     if (process.env.NODE_ENV !== "production") {
+      const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
         server: { middlewareMode: true },
         appType: "spa"
