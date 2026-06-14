@@ -14,7 +14,9 @@ import {
   getUniformDiceRollServer 
 } from "./src/lib/ludo_rules.js"; // note: we import with js since it targets build, but in tsx server.ts it resolves correctly. Wait! It is standard to import from ./src/lib/ludo_rules or with .js in ESM. Let's use direct "./src/lib/ludo_rules" which resolves natively in tsx.
 
-const DB_FILE = path.join(process.cwd(), "data", "ludoskill_db.json");
+const DB_FILE = process.env.VERCEL
+  ? path.join("/tmp", "ludoskill_db.json")
+  : path.join(process.cwd(), "data", "ludoskill_db.json");
 
 let dbCache: any = null;
 
@@ -96,8 +98,9 @@ const lobbyBroadcastNotifications: Array<{ id: string; message: string; timestam
 // Track active player sockets/polls to check of online presence
 const userLastOnline: { [userId: string]: number } = {};
 
+const app = express();
+
 async function startServer() {
-  const app = express();
   
   // Custom CORS middleware for seamless iframe sandboxing and preview domain communication
   app.use((req, res, next) => {
@@ -1318,9 +1321,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`LudoSkill container server running on port ${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`LudoSkill container server running on port ${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
