@@ -172,7 +172,7 @@ export default function LoginView({ onLoginSuccess, onSwitchToRegister }: LoginV
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col space-y-4 items-center" id="login-footer">
+        <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col items-center" id="login-footer">
           <p className="text-xs text-slate-400">
             Don't have an account?{" "}
             <button
@@ -183,15 +183,6 @@ export default function LoginView({ onLoginSuccess, onSwitchToRegister }: LoginV
               Sign Up
             </button>
           </p>
-
-          <button
-            onClick={fillAdmin}
-            id="fill-admin-shortcut"
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700/80 text-[10px] text-indigo-400 font-semibold rounded-lg border border-indigo-500/20 transition cursor-pointer"
-          >
-            <Shield size={12} />
-            <span>Load Admin Credentials</span>
-          </button>
         </div>
 
       </div>
